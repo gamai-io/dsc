@@ -1,3 +1,6 @@
+[![CI](https://github.com/gamai-io/dsc/actions/workflows/ci.yml/badge.svg)](https://github.com/gamai-io/dsc/actions/workflows/ci.yml)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
+
 # dsc — Deterministic Semantic Core + GTL/1
 
 Offline, stdlib-first layer for agent decisions: normalize → deterministic fingerprints → lexical retrieval → hard checks → calibrated cache → proof of action.
