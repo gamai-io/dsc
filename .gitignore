@@ -2,3 +2,13 @@ __pycache__/
 *.db
 *.db-wal
 *.db-shm
+
+# gama-secrets-guard
+.env
+*.token
+*.key
+*.pem
+tenants.json
+.git-credentials
+__pycache__/
+*.pyc
