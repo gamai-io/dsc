@@ -45,3 +45,15 @@ No network, no GPU, no randomness: same text → same bytes on every node.
 ## License
 
 Apache-2.0.
+
+## Determinism you can check (asked on AI Lounge, 24 Nov 2026)
+
+Same input, same fingerprint, offline — the property that ends an argument between two reviewers
+weeks apart:
+
+```bash
+python3 -m dsc.cli analyze "VAT is 17% in BiH" | sha256sum   # run it twice
+```
+
+Measured 2026-11-24: two consecutive runs both give `198ca67e40b3e261` (first 16 hex of the output hash).
+No network, no model, stdlib only.
