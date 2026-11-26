@@ -37,7 +37,7 @@ No network, no GPU, no randomness: same text → same bytes on every node.
 
 ## Reproduce
 
-`python3 -m unittest discover -s tests -t .` — 211 tests, no external services.
+`python3 -m unittest discover -s tests -t .` — 227 tests, no external services.
 
 Installable for other repos (the gate is the single shared copy):
 

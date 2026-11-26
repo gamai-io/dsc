@@ -13,6 +13,7 @@ from .gtl import ToolSpec, TrustLayer
 from .model import DeterministicModel
 from .unify import Unified
 from .cache import SemanticCache
+from .cachekey import SCHEME as CACHE_KEY_SCHEME, is_current as is_current_cache_key, request_key
 from .detector import (
     fleet_determinism, load_key, poa_chain, poa_record, semantic_drift, verdict,
     verify_anchor, write_anchor,
@@ -30,7 +31,8 @@ from .sigil import sigil_receipt, to_sigil, verify_sigil
 from .verify import ConformalGate, split_claims, verify_answer, verify_claim
 
 __all__ = [
-    "Core", "SemanticCache", "poa_record", "poa_chain", "fleet_determinism",
+    "Core", "SemanticCache", "request_key", "CACHE_KEY_SCHEME", "is_current_cache_key",
+    "poa_record", "poa_chain", "fleet_determinism",
     "semantic_drift", "verdict", "write_anchor", "verify_anchor", "load_key", "hamming", "jaccard_est", "minhash128",
     "sha256_hex", "simhash64", "calibrate_threshold", "conformal_quantile",
     "decide", "ece", "wrrf", "cosine_q", "dense", "vector", "BM25Index",

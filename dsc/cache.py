@@ -17,6 +17,7 @@ import threading
 import time
 
 from . import hdc
+from .cachekey import request_key
 from .fingerprints import sha256_hex, simhash64
 from .lexical import token_overlap
 from .normalize import (
@@ -139,12 +140,20 @@ class SemanticCache:
             return int(ttl)
         return int(self.ttl.get(domain, self.ttl.get("general", 900)))
 
-    def _exact_key(self, qc: str, sid, global_scope: bool = False,
+    def _exact_key(self, qc: str, sid, domain: str = "general",
+                   global_scope: bool = False,
                    envelope_id: str | None = None) -> str:
-        env = "|env:%s" % (envelope_id or "")
-        if global_scope:
-            return sha256_hex("global||" + qc + env)
-        return sha256_hex("sid|%s|%s%s" % (sid or "", qc, env))
+        """One key implementation for the whole stack: ``dsc.cachekey``.
+
+        ``qc`` is already canonical, so it is passed as the normalised text.
+        Tenant = sid; a global-scope entry lives in the empty-session namespace
+        and therefore can never be reached with a sid.  Domain and envelope are
+        values in the context object, not ``|``-joined suffixes.
+        """
+        return request_key(qc, normalized=qc,
+                           session="" if global_scope else (sid or ""),
+                           context={"scope": "global" if global_scope else "sid",
+                                    "domain": domain, "env": envelope_id})
 
     def _row_valid(self, row, now: float, domain: str) -> bool:
         if row is None:
@@ -176,7 +185,8 @@ class SemanticCache:
             qc = canonical(query)
             self._stats["get"] += 1
             for glob in ((False, True) if sid else (True,)):
-                h = self._exact_key(qc, sid, global_scope=glob, envelope_id=envelope_id)
+                h = self._exact_key(qc, sid, domain, global_scope=glob,
+                                    envelope_id=envelope_id)
                 row = c.execute(
                     "SELECT h,q,qc,answer,meta,created,expires,epoch,dom,sid,scope,trust,hits "
                     "FROM entries WHERE h=?", (h,)).fetchone()
@@ -269,7 +279,8 @@ class SemanticCache:
         if inference_level == "STOCHASTIC":
             exact_only = True
         scope = "sid" if sid else "global"
-        h = self._exact_key(canonical(query), sid, global_scope=(scope == "global"),
+        h = self._exact_key(canonical(query), sid, domain,
+                            global_scope=(scope == "global"),
                             envelope_id=envelope_id)
         vec = self._embed(query)
         sh = simhash64(query)
