@@ -23,6 +23,9 @@ Two failure modes dominate agent systems: **false semantic hits** (high cosine s
 - `dsc/amount.py` — money-field parser (`2.400,00`, `1.234.567,89`, `2,400.00`)
 - `dsc/gate.py` — structural pre-LLM gate (shell/SQL intent) + `T1`/`T2` policy pre-filter;
   the single copy used by `gama-fastpath` (see `MIGRATION.md`)
+- `dsc/cachepolicy.py` — "may this answer be replayed?" as data (freshness, clock,
+  multi-step, state-changing tools); the single copy used by `gama-offline` and
+  `gama-fastpath`
 
 ## Install / run
 
@@ -37,13 +40,14 @@ No network, no GPU, no randomness: same text → same bytes on every node.
 
 ## Reproduce
 
-`python3 -m unittest discover -s tests -t .` — 227 tests, no external services.
+`python3 -m unittest discover -s tests -t .` — 243 tests, no external services.
 
-Installable for other repos (the gate is the single shared copy):
+Installable for other repos (the gate, money parser, cache key and cacheability
+policy are the shared copies):
 
 ```bash
 pip install "dsc @ git+https://github.com/gamai-io/dsc@<commit>"
-python3 -c "from dsc.gate import check; from dsc.amount import parse_amount; print(check('rm -fr /'))"
+python3 -c "from dsc.gate import check; from dsc.amount import parse_amount; from dsc.cachepolicy import fresh; print(check('rm -fr /'), fresh('lager 100011'))"
 ```
 
 ## Limitations

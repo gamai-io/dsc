@@ -277,7 +277,7 @@ def is_fresh(text: str) -> bool:
     return any(t in FRESH_WORDS for t in tokens(text))
 
 
-_MULTI = re.compile(
+_MULTI_STEP = re.compile(
     r"(?i)(?:\s+i\s+|\s+pa\s+|\s+zatim\s+|\s+potom\s+|\s+onda\s+|;|\s+&\s+)"
     r".{0,80}?\b(otvori|pokreni|napisi|posalji|ukucaj|klikni|napravi|kreiraj|"
     r"obrisi|pusti|prebaci|dodaj|unesi|instaliraj)\b"
@@ -285,7 +285,7 @@ _MULTI = re.compile(
 
 
 def is_multi_step(text: str) -> bool:
-    return bool(_MULTI.search(text or ""))
+    return bool(_MULTI_STEP.search(text or ""))
 
 
 def is_risky(text: str) -> bool:
