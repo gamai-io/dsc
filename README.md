@@ -20,6 +20,9 @@ Two failure modes dominate agent systems: **false semantic hits** (high cosine s
 - `dsc/verify.py`, `dsc/detector.py` — claim verification, PoA/poisoning detectors
 - `dsc/gtl.py` — GTL/1 trust layer: tool envelopes, receipts, replay, audit
 - `dsc/accounting.py` — Decimal money math (VAT, FX, margins), round-half-up
+- `dsc/amount.py` — money-field parser (`2.400,00`, `1.234.567,89`, `2,400.00`)
+- `dsc/gate.py` — structural pre-LLM gate (shell/SQL intent) + `T1`/`T2` policy pre-filter;
+  the single copy used by `gama-fastpath` (see `MIGRATION.md`)
 
 ## Install / run
 
@@ -34,7 +37,14 @@ No network, no GPU, no randomness: same text → same bytes on every node.
 
 ## Reproduce
 
-`python3 -m unittest discover -s tests -t .` — 193 tests, no external services.
+`python3 -m unittest discover -s tests -t .` — 211 tests, no external services.
+
+Installable for other repos (the gate is the single shared copy):
+
+```bash
+pip install "dsc @ git+https://github.com/gamai-io/dsc@<commit>"
+python3 -c "from dsc.gate import check; from dsc.amount import parse_amount; print(check('rm -fr /'))"
+```
 
 ## Limitations
 

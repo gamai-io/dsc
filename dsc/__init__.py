@@ -3,9 +3,11 @@
 Offline, stdlib-first: normalize -> fingerprints -> deterministic vector -> lexical
 hard checks -> calibrated verification -> two-stage semantic cache -> evidence detector.
 """
+from . import amount, gate
 from .accounting import (
     fifo, fx, pdv_exclusive, pdv_inclusive, verify_arithmetic, verify_fx_claim, verify_pdv_claim,
 )
+from .amount import parse_amount
 from .api import Core
 from .gtl import ToolSpec, TrustLayer
 from .model import DeterministicModel
@@ -33,7 +35,8 @@ __all__ = [
     "sha256_hex", "simhash64", "calibrate_threshold", "conformal_quantile",
     "decide", "ece", "wrrf", "cosine_q", "dense", "vector", "BM25Index",
     "hard_check", "lexical_entailment", "canonical", "features", "fold",
-    "parse_number", "ConformalGate", "split_claims", "verify_answer", "verify_claim",
+    "parse_number", "parse_amount", "amount", "gate",
+    "ConformalGate", "split_claims", "verify_answer", "verify_claim",
     "Envelope", "receipt", "verify_receipt", "compare_receipts", "guard", "required_ok",
     "local_vllm_env", "remote_api_env", "determinism_describe", "LEVELS",
     "sigil_receipt", "to_sigil", "verify_sigil",

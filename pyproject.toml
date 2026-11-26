@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dsc"
+version = "0.1.0"
+description = "DSC — deterministic semantic core: normalize, fingerprints, hard checks, calibrated cache, pre-LLM gate"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "GAMA" }]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+]
+
+[project.optional-dependencies]
+# only sigil/nondeterminism receipts need Ed25519 signatures
+crypto = ["cryptography"]
+
+[tool.setuptools]
+packages = ["dsc"]
